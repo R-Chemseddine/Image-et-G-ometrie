@@ -1,9 +1,20 @@
 from PIL import Image
 import numpy as np
 
+
+def add_margin(pil_img, top, right, bottom, left, color):
+    width, height = pil_img.size
+    new_width = width + right + left
+    new_height = height + top + bottom
+    result = Image.new(pil_img.mode, (new_width, new_height), color)
+    result.paste(pil_img, (left, top))
+    return result
+
 image = Image.open("spider.png")
 
-I = np.array(image)
+image_w_padding = add_margin(image, 1, 1, 1, 1, 0)
+
+I = np.array(image_w_padding)
 
 image1 = Image.new('L', (len(I), len(I[0])))
 
@@ -22,4 +33,4 @@ for i in range(len(I)):
 image1 = Image.fromarray(I1)
 
 image1.show()
-image.show()
+image_w_padding.show()
